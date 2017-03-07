@@ -4,3 +4,34 @@ superagent-charset用于解决网页内容中文字体问题，比如UTF-8，GB2
 cheerio相当于一个Node版的jQuery，用于从CSS选择器取数据
 npm init  //初始化
 npm install express superagent superagent-charset cheerio --save  //安装库
+代码如下：++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+var express = require('express');
+var cheerio = require('cheerio');
+var charset=require('superagent-charset');
+var superagent=charset(require('superagent'));//这一步很重要
+var app = express();
+app.get('/',function(req,res,next){
+    superagent
+    .get('http://www.dytt8.net/index.htm')
+    .charset('gb2312')//我们预知了电影天堂网站的charset是gb2312
+    .end(function(err,con){
+        if(err){
+            return next(err);
+        }//常规的错误处理方法
+        var items=[];
+        var $=cheerio.load(con.text);
+        $('.co_content2 a').each(function(idx,ele){
+            $ele=$(ele);
+            items.push({
+                href:$ele.attr('href'),
+                content:$ele.text()
+            });
+        });//使用JSON格式输出
+        res.send(items);
+    });
+});
+
+app.listen('3000',function(){
+    console.log('the demo is runing at port 3000');
+});
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

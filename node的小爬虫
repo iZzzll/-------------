@@ -1,0 +1,6 @@
+首先，我们需要npm init（乱填就好），然后安装一些库：
+superagent是一个抓取网页的库
+superagent-charset用于解决网页内容中文字体问题，比如UTF-8，GB2312，如果不使用，有的网站爬下来可能会出现中文乱码
+cheerio相当于一个Node版的jQuery，用于从CSS选择器取数据
+npm init  //初始化
+npm install express superagent superagent-charset cheerio --save  //安装库
